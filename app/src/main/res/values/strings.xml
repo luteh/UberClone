@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">UberClone</string>
+
+    <string name="label_uber">U B E R</string>
+    <string name="label_partner">PARTNER</string>
+    <string name="label_rider_app">LOOKING FOR THE RIDER APP?</string>
+
+    <string name="label_sign_in">SIGN IN</string>
+    <string name="label_register">REGISTER</string>
+
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="label_name">Name</string>
+    <string name="label_phone">Phone</string>
+
+    <string name="label_message_use_email">Please use email to register</string>
+    <string name="label_cancel">CANCEL</string>
+
+    <string name="label_msg_enter_email">Please enter email address</string>
+    <string name="label_msg_enter_password">Please enter password</string>
+    <string name="label_msg_enter_name">Please enter your name</string>
+    <string name="label_msg_enter_phone">Please enter your phone number</string>
+    <string name="label_msg_password_too_short">Password too short!</string>
+    <string name="label_msg_invalid_email">Email is invalid!</string>
+
+    <string name="label_msg_register_succes">Register successfully!</string>
+    <string name="label_msg_fail">Failed </string>
+
+</resources>

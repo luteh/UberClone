@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Font sizes -->
+    <dimen name="text_xsmall_">8sp</dimen>
+    <dimen name="text_xsmall">10sp</dimen>
+    <dimen name="text_small_12">12sp</dimen>
+    <dimen name="text_small_13">13sp</dimen>
+    <dimen name="text_small_14">14sp</dimen>
+    <dimen name="text_small__">15sp</dimen>
+    <dimen name="text_default_16">16sp</dimen>
+    <dimen name="text_default">18sp</dimen>
+    <dimen name="text_large_">20sp</dimen>
+    <dimen name="text_large">22sp</dimen>
+    <dimen name="text_xlarge">26sp</dimen>
+    <dimen name="text_xxlarge">30sp</dimen>
+    <dimen name="text_xxxlarge">34sp</dimen>
+    <dimen name="text_xxxlarge_">42sp</dimen>
+    <dimen name="text_title_toolbar">20sp</dimen>
+    <dimen name="text_splash">50sp</dimen>
+
+    <!-- Margins -->
+    <dimen name="margin_xxsmall">1dp</dimen>
+    <dimen name="margin_xsmall">2dp</dimen>
+    <dimen name="margin_small_">3dp</dimen>
+    <dimen name="margin_small">4dp</dimen>
+    <dimen name="margin_small_6">6dp</dimen>
+    <dimen name="margin_default">8dp</dimen>
+    <dimen name="margin_default_">10dp</dimen>
+    <dimen name="margin_xdefault">11.5dp</dimen>
+    <dimen name="margin_large">12dp</dimen>
+    <dimen name="margin_large_">14dp</dimen>
+    <dimen name="margin_large__">16dp</dimen>
+    <dimen name="margin_big">18dp</dimen>
+    <dimen name="margin_xlarge">20dp</dimen>
+    <dimen name="margin_xlarge_">25dp</dimen>
+    <dimen name="margin_xlarge__">30dp</dimen>
+    <dimen name="margin_xxlarge">35dp</dimen>
+    <dimen name="margin_xxlarge_">40dp</dimen>
+    <dimen name="margin_xxlarge__">48dp</dimen>
+    <dimen name="margin_xxxlarge">60dp</dimen>
+    <dimen name="margin_xxxlarge_">75dp</dimen>
+</resources>
