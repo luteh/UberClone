@@ -19,4 +19,6 @@ public class AppConstant {
 
     // TAG
     public static final String MAPS_ACTIVITY_TAG = MapsActivity.class.getSimpleName();
+
+    public static final String ARG_DRIVERS = "drivers";
 }

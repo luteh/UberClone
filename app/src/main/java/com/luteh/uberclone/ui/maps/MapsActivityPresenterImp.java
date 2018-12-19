@@ -34,6 +34,7 @@ import com.luteh.uberclone.common.Common;
 
 import androidx.core.app.ActivityCompat;
 
+import static com.luteh.uberclone.common.AppConstant.ARG_DRIVERS;
 import static com.luteh.uberclone.common.AppConstant.DISPLACMENT;
 import static com.luteh.uberclone.common.AppConstant.FATEST_INTERVAL;
 import static com.luteh.uberclone.common.AppConstant.MAPS_ACTIVITY_TAG;
@@ -52,20 +53,12 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location lastLocation;
-    private DatabaseReference drivers;
-    private GeoFire geoFire;
     private GoogleMap mMap;
     private Marker currentMarker;
 
     public MapsActivityPresenterImp(Context context, IMapsActivityView iMapsActivityView) {
         this.context = context;
         this.iMapsActivityView = iMapsActivityView;
-    }
-
-    @Override
-    public void init() {
-        drivers = FirebaseDatabase.getInstance().getReference("drivers");
-        geoFire = new GeoFire(drivers);
     }
 
     @Override
@@ -98,8 +91,10 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
         iMapsActivityView.onStopLocationUpdates();
     }
 
-    @Override
-    public void displayLocation() {
+    /**
+     * To display the current location of user in Map
+     */
+    private void displayLocation() {
         if (!Common.isLocationPermissionGranted(context)) {
             return;
         }
@@ -109,7 +104,7 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
             final double longitude = lastLocation.getLongitude();
 
             // Update to Firebase
-            geoFire.setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
+            new GeoFire(FirebaseDatabase.getInstance().getReference(ARG_DRIVERS)).setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
                 @Override
                 public void onComplete(String key, DatabaseError error) {
                     //Add Marker
@@ -130,6 +125,9 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
         }
     }
 
+    /**
+     * To animate map marker
+     */
     private void rotateMarker(Marker currentMarker, int i, GoogleMap mMap) {
         Handler handler = new Handler();
         long start = SystemClock.uptimeMillis();
@@ -162,8 +160,7 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
         }
     }
 
-    @Override
-    public void buildLocationRequest() {
+    private void buildLocationRequest() {
         locationRequest = new LocationRequest();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                 .setInterval(UPDATE_INTERVAL)
@@ -171,8 +168,7 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
                 .setSmallestDisplacement(DISPLACMENT);
     }
 
-    @Override
-    public void buildLocationCallback() {
+    private void buildLocationCallback() {
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {

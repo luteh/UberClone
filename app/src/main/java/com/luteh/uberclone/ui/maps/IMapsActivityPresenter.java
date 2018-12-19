@@ -8,19 +8,17 @@ import com.google.android.gms.maps.GoogleMap;
  */
 public interface IMapsActivityPresenter {
 
-    void init();
-
     void initMap(GoogleMap googleMap);
 
     void initLocationUtils();
 
-    void buildLocationRequest();
-
-    void buildLocationCallback();
-
+    /**
+     * To update current location when user turn on the on/off switch
+     */
     void startLocationUpdates();
 
+    /**
+     * To stop update current location when user turn off the on/off switch
+     */
     void stopLocationUpdates();
-
-    void displayLocation();
 }

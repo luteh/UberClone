@@ -58,7 +58,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback,
         iMapsActivityPresenter = new MapsActivityPresenterImp(this, this);
         iMapsActivityPresenter.initLocationUtils();
 
-        iMapsActivityPresenter.init();
     }
 
     @Override

@@ -6,11 +6,17 @@ package com.luteh.uberclone.ui.maps;
  */
 public interface IMapsActivityView {
     /**
-     * Request permissions if not granted
+     * Show request permissions if not granted
      */
     void onLocationPermissionNotGranted();
 
+    /**
+     * Show message if user is online
+     */
     void onStartLocationUpdated();
 
+    /**
+     * Show message if user is offline
+     */
     void onStopLocationUpdates();
 }
