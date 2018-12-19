@@ -25,5 +25,8 @@
 
     <string name="label_msg_register_succes">Register successfully!</string>
     <string name="label_msg_fail">Failed </string>
+    <string name="title_activity_maps">Map</string>
+
+    <string name="label_find_user">FIND USER</string>
 
 </resources>

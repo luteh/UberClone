@@ -40,6 +40,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
+    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
@@ -70,5 +71,20 @@ dependencies {
 
     // Rx2Firebase
     implementation 'com.github.FrangSierra:RxFirebase:1.5.6'
+
+    //    Spots Dialog
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
+
+    // Play Services
+    implementation "com.google.android.gms:play-services-maps:16.0.0"
+    implementation "com.google.android.gms:play-services-location:16.0.0"
+
+    // Geo Fire
+    implementation 'com.firebase:geofire-android:2.3.1'
+
+    // Material Animated Switch
+    implementation 'com.github.glomadrian:MaterialAnimatedSwitch:1.1@aar'
+
+
 }
 apply plugin: 'com.google.gms.google-services'

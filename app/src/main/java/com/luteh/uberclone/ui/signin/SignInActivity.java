@@ -16,11 +16,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.luteh.uberclone.common.BaseActivity;
 import com.luteh.uberclone.R;
 import com.luteh.uberclone.common.Common;
+import com.luteh.uberclone.ui.maps.MapsActivity;
 import com.luteh.uberclone.ui.signin.dialog.RegisterDialogViews;
 import com.luteh.uberclone.ui.signin.dialog.SignInDialogViews;
 
@@ -54,7 +54,16 @@ public class SignInActivity extends BaseActivity implements ISignInActivityView 
     protected void onInit() {
         super.onInit();
 
+        updateUI();
+
         iSignInActivityPresenter = new SignInActivityPresenterImp(this, this);
+    }
+
+    private void updateUI() {
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            finish();
+            startActivityFromRight(MapsActivity.class);
+        }
     }
 
     @OnClick(R.id.btnRegister)
@@ -82,6 +91,7 @@ public class SignInActivity extends BaseActivity implements ISignInActivityView 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        Common.showSpotsProgressDialog(SignInActivity.this);
 
                         // Check Validation
                         iSignInActivityPresenter.submitLogin(
@@ -118,6 +128,7 @@ public class SignInActivity extends BaseActivity implements ISignInActivityView 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
+                        Common.showSpotsProgressDialog(SignInActivity.this);
 
                         // Check Validation
                         iSignInActivityPresenter.submitRegister(
@@ -144,21 +155,27 @@ public class SignInActivity extends BaseActivity implements ISignInActivityView 
     @Override
     public void onRegisterSuccess() {
         Common.showSnackBar(rootLayout, getResources().getText(R.string.label_msg_register_succes).toString());
+        Common.dismissSpotsProgress();
     }
 
     @Override
     public void onRegisterFailure(String errorMessage) {
         Common.showSnackBar(rootLayout, getResources().getText(R.string.label_msg_fail) + errorMessage);
+        Common.dismissSpotsProgress();
     }
 
     @Override
     public void onLoginSuccess() {
-        Common.showSnackBar(rootLayout, "Login Success " + FirebaseAuth.getInstance().getCurrentUser());
+//        Common.showSnackBar(rootLayout, "Login Success " + FirebaseAuth.getInstance().getCurrentUser());
+        Common.dismissSpotsProgress();
+        finishToRight();
+        startActivityFromRight(MapsActivity.class);
     }
 
     @Override
     public void onLoginFailure(String message) {
         Common.showSnackBar(rootLayout, message);
+        Common.dismissSpotsProgress();
     }
 
     @Override

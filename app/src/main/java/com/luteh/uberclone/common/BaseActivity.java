@@ -1,6 +1,7 @@
 package com.luteh.uberclone.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.luteh.uberclone.R;
@@ -46,6 +47,28 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void onInit() {
 
+    }
+
+    public final void startActivityFromRight(Class clazz) {
+        startActivity(clazz);
+        overridePendingTransition(R.anim.anim_enter_right, R.anim.anim_sticky);
+    }
+
+    public final void startActivity(Class clazz) {
+        startActivity(clazz, null);
+    }
+
+    public final void startActivity(Class clazz, Bundle bundle) {
+        Intent intent = new Intent(this, clazz);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+    }
+
+    public final void finishToRight() {
+        finish();
+        overridePendingTransition(R.anim.anim_sticky, R.anim.anim_leave_right);
     }
 
     @Override
