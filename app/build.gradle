@@ -84,6 +84,8 @@ dependencies {
     // Material Animated Switch
     implementation 'com.github.glomadrian:MaterialAnimatedSwitch:1.1@aar'
 
-
+    // Retrofit 2
+    implementation 'com.squareup.retrofit2:retrofit:2.5.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.5.0'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -19,4 +19,6 @@ public interface IMapsActivityView {
      * Show message if user is offline
      */
     void onStopLocationUpdates();
+
+    void onDisplayLocation(double latitude, double longitude);
 }

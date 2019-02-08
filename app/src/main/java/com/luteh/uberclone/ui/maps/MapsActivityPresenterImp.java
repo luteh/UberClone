@@ -1,9 +1,7 @@
 package com.luteh.uberclone.ui.maps;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.Address;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Looper;
@@ -20,19 +18,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.luteh.uberclone.R;
-import com.luteh.uberclone.common.AppConstant;
 import com.luteh.uberclone.common.Common;
-
-import androidx.core.app.ActivityCompat;
 
 import static com.luteh.uberclone.common.AppConstant.ARG_DRIVERS;
 import static com.luteh.uberclone.common.AppConstant.DISPLACMENT;
@@ -53,8 +45,8 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location lastLocation;
-    private GoogleMap mMap;
-    private Marker currentMarker;
+    /*private GoogleMap mMap;
+    private Marker currentMarker;*/
 
     public MapsActivityPresenterImp(Context context, IMapsActivityView iMapsActivityView) {
         this.context = context;
@@ -63,7 +55,12 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
 
     @Override
     public void initMap(GoogleMap googleMap) {
-        mMap = googleMap;
+        /*mMap = googleMap;
+        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        mMap.setTrafficEnabled(false);
+        mMap.setIndoorEnabled(false);
+        mMap.setBuildingsEnabled(false);
+        mMap.getUiSettings().setZoomControlsEnabled(true);*/
     }
 
     @SuppressLint("MissingPermission")
@@ -86,7 +83,7 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
         }
         fusedLocationProviderClient.removeLocationUpdates(locationCallback);
 
-        if (currentMarker != null) currentMarker.remove();
+//        if (this.currentMarker != null) this.currentMarker.remove();
 
         iMapsActivityView.onStopLocationUpdates();
     }
@@ -104,22 +101,26 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
             final double longitude = lastLocation.getLongitude();
 
             // Update to Firebase
-            new GeoFire(FirebaseDatabase.getInstance().getReference(ARG_DRIVERS)).setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(), new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
+            new GeoFire(FirebaseDatabase.getInstance().getReference(ARG_DRIVERS))
+                    .setLocation(FirebaseAuth.getInstance().getCurrentUser().getUid(),
+                            new GeoLocation(latitude, longitude), new GeoFire.CompletionListener() {
                 @Override
                 public void onComplete(String key, DatabaseError error) {
                     //Add Marker
-                    if (currentMarker != null) {
+                    /*if (currentMarker != null) {
                         currentMarker.remove();
                     }
                     currentMarker = mMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
+//                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.car))
                             .position(new LatLng(latitude, longitude))
-                            .title("You"));
+                            .title("You Location"));
 
                     // Move camera to this position
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
-                    // Draw animation rotate marker
-                    rotateMarker(currentMarker, -360, mMap);
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));*/
+                    /*// Draw animation rotate marker
+                    rotateMarker(currentMarker, -360, mMap);*/
+
+                    iMapsActivityView.onDisplayLocation(latitude, longitude);
                 }
             });
         }
