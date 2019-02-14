@@ -9,8 +9,6 @@ import com.google.android.gms.maps.model.Marker;
  */
 public interface IMapsActivityPresenter {
 
-    void initMap(GoogleMap googleMap);
-
     void initLocationUtils();
 
     /**

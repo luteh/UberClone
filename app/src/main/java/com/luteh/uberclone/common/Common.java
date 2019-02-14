@@ -17,11 +17,17 @@ import java.util.List;
 import androidx.core.app.ActivityCompat;
 import dmax.dialog.SpotsDialog;
 
+import static java.lang.Math.acos;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+
 /**
  * Created by Luthfan Maftuh on 17/12/2018.
  * Email luthfanmaftuh@gmail.com
  */
 public class Common {
+
+    private static double PI_RAD = Math.PI / 180.0;
 
     private static android.app.AlertDialog waitingDialog;
 
@@ -96,5 +102,18 @@ public class Common {
         }
 
         return poly;
+    }
+
+    /**
+     * Use Great Circle distance formula to calculate distance between 2 coordinates in kilometers.
+     * https://software.intel.com/en-us/blogs/2012/11/25/calculating-geographic-distances-in-location-aware-apps
+     */
+    public static double greatCircleInKilometers(double lat1, double long1, double lat2, double long2) {
+        double phi1 = lat1 * PI_RAD;
+        double phi2 = lat2 * PI_RAD;
+        double lam1 = long1 * PI_RAD;
+        double lam2 = long2 * PI_RAD;
+
+        return 6371.01 * acos(sin(phi1) * sin(phi2) + cos(phi1) * cos(phi2) * cos(lam2 - lam1));
     }
 }

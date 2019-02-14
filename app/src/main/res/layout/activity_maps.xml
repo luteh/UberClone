@@ -11,21 +11,29 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <EditText
+        <!--<EditText
             android:id="@+id/edtPlace"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_weight="5"
-            android:hint="Enter Pickup Location" />
+            android:hint="Enter Pickup Location" />-->
 
-        <Button
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"/>
+
+        <!--<Button
             android:id="@+id/btnGo"
             android:layout_width="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:text="GO" />
+            android:text="GO" />-->
     </LinearLayout>
 
     <fragment

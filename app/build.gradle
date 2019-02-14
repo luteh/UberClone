@@ -20,6 +20,7 @@ android {
                 }
             }
         }
+        exclude group: 'com.google.guava', module: 'listenablefuture'
     }
     buildTypes {
         release {
@@ -77,6 +78,8 @@ dependencies {
     // Play Services
     implementation "com.google.android.gms:play-services-maps:16.1.0"
     implementation "com.google.android.gms:play-services-location:16.0.0"
+//    implementation 'com.google.android.gms:play-services-places:16.0.0'
+    implementation 'com.google.android.libraries.places:places:1.0.0'
 
     // Geo Fire
     implementation 'com.firebase:geofire-android:2.3.1'

@@ -24,7 +24,9 @@ import android.widget.Toast;
 
 import com.github.glomadrian.materialanimatedswitch.MaterialAnimatedSwitch;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -41,6 +43,16 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.maps.model.SquareCap;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AutocompletePrediction;
+import com.google.android.libraries.places.api.model.AutocompleteSessionToken;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.luteh.uberclone.R;
 import com.luteh.uberclone.common.BaseActivity;
 import com.luteh.uberclone.common.Common;
@@ -50,6 +62,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.luteh.uberclone.common.AppConstant.REQUEST_CODE_LOCATION;
@@ -59,16 +72,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener,
         MaterialAnimatedSwitch.OnCheckedChangeListener,
-        IMapsActivityView {
+        IMapsActivityView,
+        PlaceSelectionListener {
 
     private static final String TAG = "MapsActivity";
 
     @BindView(R.id.switchLocation)
     MaterialAnimatedSwitch switchLocation;
-    @BindView(R.id.edtPlace)
+    /*@BindView(R.id.edtPlace)
     EditText edtPlace;
     @BindView(R.id.btnGo)
-    Button btnGo;
+    Button btnGo;*/
+    AutocompleteSupportFragment place_autocomplete_fragment;
 
     private GoogleApiClient googleApiClient;
 
@@ -163,27 +178,47 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback,
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
     protected void onInit() {
         super.onInit();
 
+        // Initialize Places.
+        Places.initialize(getApplicationContext(), "AIzaSyDzRgOff5e9QQJ3vhhIqyx6GZnLnJcZjbE");
+
+// Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
         iMapsActivityPresenter = new MapsActivityPresenterImp(this, this);
         iMapsActivityPresenter.initLocationUtils();
 
         mService = Common.getGoogleAPI();
+
+        //        Places API
+        place_autocomplete_fragment = (AutocompleteSupportFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.place_autocomplete_fragment);
+
+        // Specify the types of place data to return.
+        place_autocomplete_fragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.ADDRESS));
+        place_autocomplete_fragment.setCountry("id");
+        place_autocomplete_fragment.setHint("Type the address here");
+        place_autocomplete_fragment.setTypeFilter(TypeFilter.ADDRESS);
+
+        place_autocomplete_fragment.setOnPlaceSelectedListener(this);
     }
 
-    @OnClick(R.id.btnGo)
-    void onBtnGoClick() {
-        destination = edtPlace.getText().toString();
-        destination = destination.replace(" ", "+"); // Replace space with + for fetch data
-        Log.d(TAG, "onBtnGoClick: " + destination);
+    /* @OnClick(R.id.btnGo)
+     void onBtnGoClick() {
+         destination = edtPlace.getText().toString();
+         destination = destination.replace(" ", "+"); // Replace space with + for fetch data
+         Log.d(TAG, "onBtnGoClick: " + destination);
 
-        getDirection();
-    }
-
+         getDirection();
+     }
+ */
     private void getDirection() {
         currentPosition = new LatLng(latitude, longitude);
 
@@ -218,8 +253,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback,
                                 CameraUpdate mCameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 2);
                                 mMap.animateCamera(mCameraUpdate);
 
-                                // TODO: 07/02/2019 Refactor codes to adjustment with MVP Pattern (for mMap)
 
+//                                to draw paths
                                 polylineOptions = new PolylineOptions();
                                 polylineOptions.color(Color.GRAY);
                                 polylineOptions.width(5);
@@ -386,5 +421,34 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback,
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 15.0f));
                     /*// Draw animation rotate marker
                     rotateMarker(currentMarker, -360, mMap);*/
+    }
+
+    @Override
+    public void onPlaceSelected(@NonNull Place place) {
+        Toast.makeText(this, "onPlaceSelected: ID: " + place.getId() +
+                "\n Address: " + place.getAddress(), Toast.LENGTH_SHORT).show();
+        if (switchLocation.isChecked()) {
+            Log.d(TAG, "onPlaceSelected: " + place.getAddress());
+
+            destination = place.getAddress();
+            place_autocomplete_fragment.setText(destination);
+            destination = destination.replace(" ", "+");
+
+            /*if (place.getLatLng() != null) {
+                Log.d(TAG, "onPlaceSelected: Distance: "
+                        + Common.greatCircleInKilometers(latitude,
+                        longitude,
+                        place.getLatLng().latitude,
+                        place.getLatLng().longitude)
+                );
+            }*/
+
+            getDirection();
+        }
+    }
+
+    @Override
+    public void onError(@NonNull Status status) {
+        Toast.makeText(this, "Please change your status to ONLINE!", Toast.LENGTH_SHORT).show();
     }
 }

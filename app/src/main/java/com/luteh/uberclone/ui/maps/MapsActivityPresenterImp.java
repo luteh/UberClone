@@ -45,22 +45,10 @@ public class MapsActivityPresenterImp implements IMapsActivityPresenter {
     private LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationProviderClient;
     private Location lastLocation;
-    /*private GoogleMap mMap;
-    private Marker currentMarker;*/
 
     public MapsActivityPresenterImp(Context context, IMapsActivityView iMapsActivityView) {
         this.context = context;
         this.iMapsActivityView = iMapsActivityView;
-    }
-
-    @Override
-    public void initMap(GoogleMap googleMap) {
-        /*mMap = googleMap;
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.setTrafficEnabled(false);
-        mMap.setIndoorEnabled(false);
-        mMap.setBuildingsEnabled(false);
-        mMap.getUiSettings().setZoomControlsEnabled(true);*/
     }
 
     @SuppressLint("MissingPermission")
